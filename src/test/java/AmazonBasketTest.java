@@ -1,7 +1,11 @@
 import org.openqa.selenium.By;
 import org.openqa.selenium.NoSuchElementException;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
 import org.testng.annotations.Test;
+
+import java.time.Duration;
 
 public class AmazonBasketTest extends BaseTest {
 
@@ -18,11 +22,12 @@ public class AmazonBasketTest extends BaseTest {
     static final String SEARCH_ADD_TO_CART_BUTTON_XPATH = "//input[@id='add-to-cart-button']";
     static final String SEARCH_PRICE_ON_ITEM_PAGE_XPATH = "//*[@id='price_inside_buybox']";
     static final String SEARCH_PRICE_ON_SUMMARY_PAGE_XPATH = "//div[@class='a-row a-spacing-micro']//span[@class='a-color-price hlb-price a-inline-block a-text-bold']";
-
-
+    static final Integer POSITION = 2;
     static final String SEARCH_TERM = "Kindle";
     static final String EXPECTED_DEPARTMENT_NAME = "Kindle E-readers";
     static final String EXPECTED_SUBPAGE_TITLE = "Amazon.com: Certified Refurbished Kindle - Now with a Built-in Front Light - Black - Ad-Supported";
+    static final String EXPECTED_CART_TITLE = "Amazon.com Shopping Cart";
+    public static String SEARCH_CART_IS_EMPTY = "//div[@id='sc-active-cart']//*[contains(text(),'Your Amazon Cart is empty')]";
 
     private static void acceptCookiesIfPopupPresent() {
         try {
@@ -32,8 +37,13 @@ public class AmazonBasketTest extends BaseTest {
         }
     }
 
+    private static boolean waitForTitleToBePresent(String title, long seconds) {
+        return new WebDriverWait(driver, Duration.ofSeconds(seconds))
+                .until(ExpectedConditions.titleIs(title));
+    }
+
     @Test
-    public void basicBasketOperation() {
+    public void basicBasketOperation() throws InterruptedException {
         driver.navigate().to(AMAZON_HOME_PAGE_URL);
         String pageTitle = driver.getTitle();
         Assert.assertEquals(pageTitle, AMAZON_HOME_PAGE_TITLE); //1st test
@@ -53,5 +63,32 @@ public class AmazonBasketTest extends BaseTest {
         String summaryItemPrice = driver.findElement(By.xpath(SEARCH_PRICE_ON_SUMMARY_PAGE_XPATH)).getText().substring(1);
         Assert.assertEquals(oneItemPrice, summaryItemPrice);
 
+        Thread.sleep(2000);
+        driver.findElement(By.xpath("//a[@id='hlb-view-cart-announce']")).click();
+        waitForTitleToBePresent(EXPECTED_CART_TITLE, 2);
+
+        String subTotalPrice = driver.findElement(By.xpath("//span[@class='a-size-medium a-color-base sc-price sc-white-space-nowrap']")).getText().substring(1);
+        softAssert.assertEquals(oneItemPrice, subTotalPrice); //5th
+
+        Thread.sleep(2000);
+        driver.findElement(By.xpath("//span[@class='a-button-text a-declarative']")).click();
+        Thread.sleep(2000);
+        driver.findElement(By.xpath("//div[@class='a-popover-inner']//ul//li[3]")).click();
+        Thread.sleep(2000);
+
+        subTotalPrice = driver.findElement(By.xpath("//span[@class='a-size-medium a-color-base sc-price sc-white-space-nowrap']")).getText().substring(1);
+        Double twoItemPrice = Double.parseDouble(oneItemPrice) * 2;
+        Assert.assertEquals(twoItemPrice, Double.valueOf(subTotalPrice)); //5th
+
+        Thread.sleep(2000);
+        driver.findElement(By.xpath("//input[@value='Delete']")).click();
+        Thread.sleep(2000);
+
+        Assert.assertNotNull(SEARCH_CART_IS_EMPTY);
+
+
+        //div[@id='sc-active-cart']//*[contains(text(),'Your Amazon Cart is empty')]
+
     }
+
 }
