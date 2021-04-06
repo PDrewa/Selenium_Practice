@@ -3,6 +3,7 @@ import org.apache.logging.log4j.Logger;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.testng.annotations.AfterClass;
+import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Listeners;
 import org.testng.asserts.SoftAssert;
@@ -20,6 +21,12 @@ public abstract class BaseTest {
         System.setProperty("webdriver.chrome.driver", CHROME_DRIVER_PATH);
         driver = new ChromeDriver();
         softAssert = new SoftAssert();
+    }
+
+    @AfterMethod
+    public void browserReset(){
+        driver.manage().deleteAllCookies();
+
     }
 
     @AfterClass
