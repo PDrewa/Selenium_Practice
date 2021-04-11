@@ -1,36 +1,41 @@
+import listeners.TestReporter;
+import listeners.TestResultsListener;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.chrome.ChromeDriver;
-import org.testng.annotations.AfterClass;
-import org.testng.annotations.AfterMethod;
-import org.testng.annotations.BeforeClass;
-import org.testng.annotations.Listeners;
+import org.testng.ITestContext;
+import org.testng.annotations.*;
 import org.testng.asserts.SoftAssert;
 
-@Listeners({TestResultsListener.class,TestReporter.class})
+@Listeners({TestResultsListener.class, TestReporter.class})
 public abstract class BaseTest {
 
+    public static final Logger logger = LogManager.getLogger("Assert");
     public static WebDriver driver;
-    static final String CHROME_DRIVER_PATH = "drivers/windows/chromedriver.exe";
-    public static final Logger logger = LogManager.getLogger("");
     static SoftAssert softAssert;
+    protected DriverManager driverManager;
+    protected PropertyManager propertyManager;
 
+    @Parameters("testDataFileName")
     @BeforeClass
-    public void setup(){
-        System.setProperty("webdriver.chrome.driver", CHROME_DRIVER_PATH);
-        driver = new ChromeDriver();
+    public void setup(@Optional("default.properties") String testDataFileName
+            , ITestContext context) {
+        driverManager = new DriverManager();
+        driver = driverManager.getDriver();
+        context.setAttribute("WebDriver", driver);
+        propertyManager = new PropertyManager(testDataFileName);
         softAssert = new SoftAssert();
+
+
     }
 
     @AfterMethod
-    public void browserReset(){
+    public void browserReset() {
         driver.manage().deleteAllCookies();
-
     }
 
     @AfterClass
-    public void cleanUp(){
-            driver.quit();
+    public void cleanUp() {
+        driver.quit();
     }
 }

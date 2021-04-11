@@ -2,8 +2,8 @@
 <!DOCTYPE suite SYSTEM "https://testng.org/testng-1.0.dtd">
 <suite name="TestingSuite">
   <listeners>
-    <listener class-name="TestResultsListener" />
-    <listener class-name="TestReporter" />
+    <listener class-name="listeners.TestResultsListener" />
+    <listener class-name="listeners.TestReporter" />
   </listeners>
   <test name="Basket">
     <classes>
