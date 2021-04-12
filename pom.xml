@@ -9,6 +9,7 @@
     <version>1.5</version>
 
     <properties>
+
         <version.testng>7.3.0</version.testng>
         <version.selenium>4.0.0-beta-2</version.selenium>
         <version.guava>30.1-jre</version.guava>
@@ -18,6 +19,13 @@
         <version.download-maven-plugin>1.6.1</version.download-maven-plugin>
         <version.chromedriver>89.0.4389.23</version.chromedriver>
         <md5.chromedriver>0bf4bc39f34cee67f5f95afd8a24c191</md5.chromedriver>
+        <version.geckodriver>v0.29.0</version.geckodriver>
+        <!-- 32 bit
+        <md5.geckodriver>dc1f5f2d3bc32565e59f1ce3a32b8d3d</md5.geckodriver>
+        -->
+        <md5.geckodriver>8e19f65e730bd5960e87c7e42c88c5a7</md5.geckodriver>
+        <version.edgedriver>89.0.774.63</version.edgedriver>
+        <md5.edgedriver>6a82870f093a9a7d7972a4cfa331f72c</md5.edgedriver>
 
         <version.aspectj>1.9.6</version.aspectj>
         <version.allure>2.13.8</version.allure>
@@ -90,6 +98,7 @@
             <version>${version.log4j}</version>
         </dependency>
 
+
     </dependencies>
 
     <build>
@@ -106,8 +115,9 @@
         </testResources>
 
 
-        <!-- Downloading chrome driver executable-->
+
         <plugins>
+            <!-- Downloading chrome driver executable -->
             <plugin>
                 <groupId>com.googlecode.maven-download-plugin</groupId>
                 <artifactId>download-maven-plugin</artifactId>
@@ -120,17 +130,44 @@
                             <goal>wget</goal>
                         </goals>
                         <configuration>
-                            <url>
-                                https://chromedriver.storage.googleapis.com/${version.chromedriver}/chromedriver_win32.zip
-                            </url>
+                            <url>https://chromedriver.storage.googleapis.com/${version.chromedriver}/chromedriver_win32.zip</url>
                             <unpack>true</unpack>
                             <outputDirectory>${basedir}/${driver.folder}</outputDirectory>
                             <md5>${md5.chromedriver}</md5>
                             <checkSignature>true</checkSignature>
                         </configuration>
                     </execution>
+                    <execution>
+                        <id>install-gecko-driver-windows32</id>
+                        <phase>process-resources</phase>
+                        <goals>
+                            <goal>wget</goal>
+                        </goals>
+                        <configuration>
+                            <url>https://github.com/mozilla/geckodriver/releases/download/${version.geckodriver}/geckodriver-${version.geckodriver}-win64.zip</url>
+                            <unpack>true</unpack>
+                            <outputDirectory>${basedir}/${driver.folder}</outputDirectory>
+                            <md5>${md5.geckodriver}</md5>
+                            <checkSignature>true</checkSignature>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>install-edge-driver-windows32</id>
+                        <phase>process-resources</phase>
+                        <goals>
+                            <goal>wget</goal>
+                        </goals>
+                        <configuration>
+                            <url>https://msedgedriver.azureedge.net/${version.edgedriver}/edgedriver_win64.zip</url>
+                            <unpack>true</unpack>
+                            <outputDirectory>${basedir}/${driver.folder}</outputDirectory>
+                            <md5>${md5.edgedriver}</md5>
+                            <checkSignature>true</checkSignature>
+                        </configuration>
+                    </execution>
                 </executions>
             </plugin>
+
 
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
@@ -143,6 +180,11 @@
                     <argLine>
                         -javaagent:"${settings.localRepository}/org/aspectj/aspectjweaver/${version.aspectj}/aspectjweaver-${version.aspectj}.jar"
                     </argLine>
+                    <systemPropertyVariables>
+                        <driver.path>${driver.folder}</driver.path>
+                        <test.data.folder>${test.data.folder}</test.data.folder>
+                        <allure.results.directory>${basedir}/${allure.results.path}</allure.results.directory>
+                    </systemPropertyVariables>
                 </configuration>
                 <dependencies>
                     <dependency>
@@ -167,6 +209,5 @@
 
         </plugins>
     </build>
-
 
 </project>

@@ -1,10 +1,6 @@
 package com.pdrewa.pageobject;
 
 import com.pdrewa.PropertyManager;
-import com.pdrewa.pageobject.amazon.HomePage;
-import io.qameta.allure.Step;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.devtools.v89.page.Page;
@@ -23,6 +19,7 @@ public abstract class BasePage extends Page {
         PageFactory.initElements(this.driver, this);
         this.propertyManager = propertyManager;
     }
+
     public String getTextFromWebElement(WebElement webElement) {
         return webElement.getText();
     }
@@ -31,9 +28,10 @@ public abstract class BasePage extends Page {
         return getTextFromWebElement(webElement).substring(1);
     }
 
-    public void waitForPageToLoad(WebElement webElement){
+    public void waitForPageToLoad(WebElement webElement) {
         new WebDriverWait(driver, Duration.ofSeconds(10), Duration.ofSeconds(1))
                 .until(ExpectedConditions.visibilityOf(webElement));
     }
+
 
 }

@@ -18,7 +18,6 @@ public class ProductDetailsPage extends BasePage {
     @FindBy(xpath = "//input[@id='add-to-cart-button']")
     public WebElement addToCartButton;
 
-
     public ProductDetailsPage(WebDriver driver, PropertyManager propertyManager) {
         super(driver, propertyManager);
     }
@@ -34,8 +33,6 @@ public class ProductDetailsPage extends BasePage {
         logger.info("Trying to add product to cart");
         addToCartButton.click();
     }
-
-
 
 
 }
