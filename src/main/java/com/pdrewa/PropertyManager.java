@@ -1,3 +1,5 @@
+package com.pdrewa;
+
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -11,7 +13,7 @@ public class PropertyManager {
     private static final Properties properties = new Properties();
 
     public PropertyManager(String testDataFileName) {
-        loadProperties(System.getProperty("test.data.folder") + testDataFileName);
+        loadProperties("testdata/" + testDataFileName);
     }
 
     public String getProperty(String propertyName) {

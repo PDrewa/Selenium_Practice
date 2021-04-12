@@ -1,7 +1,7 @@
+import com.pdrewa.LogUtil;
 import io.qameta.allure.Step;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
-import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
@@ -13,21 +13,20 @@ import java.time.Duration;
 public class AmazonBasketTest extends BaseTest {
 
     public static final String SEARCH_DELETE_BUTTON_XPATH = "//input[@value='Delete']";
-    static final String AMAZON_HOME_PAGE_URL = "https://www.amazon.com/";
+    static final String AMAZON_HOME_PAGE_URL = "https://www.amazon.com/";//ok
     static final String ACCEPT_COOKIES_BUTTON_XPATH = "//input[@id='sp-cc-accept']";
     static final String SEARCH_FIELD_XPATH = "//input[@id='twotabsearchtextbox']";
-    static final String SEARCH_BUTTON_XPATH = "//input[@id='nav-search-submit-button']";
     static final String SEARCH_RESULTS_DEPARTMENTS_IN_LEFT_MENU_XPATH = "//div[@id='departments']//span[@class='a-size-base a-color-base']";
-    static final int TARGET_DEPARTMENT_INDEX = 1;
-    static final int TARGET_QUANTITY_INDEX = 3;
+    static final int TARGET_DEPARTMENT_INDEX = 1; //product.category
+    static final int TARGET_QUANTITY_INDEX = 3; //product.quantity.index
     static final String SEARCH_QUANTITY_XPATH = "//div[@class='a-popover-inner']//ul//li[" + TARGET_QUANTITY_INDEX + "]";
     static final String SEARCH_SPECIFIC_ITEM_XPATH = "//*[contains(text(),'Certified Refurbished Kindle')]";
     static final String SEARCH_ADD_TO_CART_BUTTON_XPATH = "//input[@id='add-to-cart-button']";
     static final String SEARCH_PRICE_ON_ITEM_PAGE_XPATH = "//*[@id='price_inside_buybox']";
     static final String SEARCH_PRICE_ON_SUMMARY_PAGE_XPATH = "//div[@class='a-row a-spacing-micro']//span[@class='a-color-price hlb-price a-inline-block a-text-bold']";
-    static final String SEARCH_TERM = "Kindle";
-    static final String EXPECTED_SUBPAGE_TITLE = "Amazon.com: Certified Refurbished Kindle - Now with a Built-in Front Light - Black - Ad-Supported";
-    static final String EXPECTED_CART_TITLE = "Amazon.com Shopping Cart";
+    static final String SEARCH_TERM = "Kindle";//ok
+    static final String EXPECTED_SUBPAGE_TITLE = "Amazon.com: Certified Refurbished Kindle - Now with a Built-in Front Light - Black - Ad-Supported";//ok
+    static final String EXPECTED_CART_TITLE = "Amazon.com Shopping Cart";//ok
     static final String SEARCH_VIEW_CART_XPATH = "//a[@id='hlb-view-cart-announce']";
     static final String SEARCH_CART_IS_EMPTY = "//div[@id='sc-active-cart']//*[contains(text(),'Your Amazon Cart is empty')]";
     static final String SEARCH_SUBTOTAL_PRICE_XPATH = "//span[@class='a-size-medium a-color-base sc-price sc-white-space-nowrap']";
@@ -50,14 +49,6 @@ public class AmazonBasketTest extends BaseTest {
                 .until(ExpectedConditions.elementToBeClickable(By.xpath(xPath)));
     }
 
-    @Step
-    private static void acceptCookiesIfPopupPresent() {
-        try {
-            driver.findElement(By.xpath(ACCEPT_COOKIES_BUTTON_XPATH)).click();
-        } catch (NoSuchElementException e) {
-            logger.info("Cookies pop-up is not present on page");
-        }
-    }
 
     @Step("Open web page")
     private static void openWebPage(String url) {
@@ -117,52 +108,9 @@ public class AmazonBasketTest extends BaseTest {
     }
 
     @Test
-    public void checkChooseSpecificItemFromSearchList() {
-        openWebPage(AMAZON_HOME_PAGE_URL);
-        acceptCookiesIfPopupPresent();
-        enterTextIntoField(SEARCH_FIELD_XPATH, SEARCH_TERM);
-        pressKey(Keys.ENTER);
-        clickOnElement(SEARCH_RESULTS_DEPARTMENTS_IN_LEFT_MENU_XPATH, TARGET_DEPARTMENT_INDEX);
-        clickOnElement(SEARCH_SPECIFIC_ITEM_XPATH);
-
-        checkCurrentUrl(EXPECTED_SUBPAGE_TITLE);
-    }
-
-    @Test
-    public void checkAddingProductToCart() {
-        openWebPage(AMAZON_HOME_PAGE_URL);
-        acceptCookiesIfPopupPresent();
-        enterTextIntoField(SEARCH_FIELD_XPATH, SEARCH_TERM);
-        pressKey(Keys.ENTER);
-        clickOnElement(SEARCH_RESULTS_DEPARTMENTS_IN_LEFT_MENU_XPATH, TARGET_DEPARTMENT_INDEX);
-        clickOnElement(SEARCH_SPECIFIC_ITEM_XPATH);
-        String oneItemPrice = getPriceWithoutCurrency(SEARCH_PRICE_ON_ITEM_PAGE_XPATH);
-        clickOnElement(SEARCH_ADD_TO_CART_BUTTON_XPATH);
-        String summaryItemPrice = getPriceWithoutCurrency(SEARCH_PRICE_ON_SUMMARY_PAGE_XPATH);
-        checkPrices(oneItemPrice, summaryItemPrice);
-    }
-
-    @Test
-    public void checkingIfProductInCartHasTheSamePriceAsOnProductPage() {
-        openWebPage(AMAZON_HOME_PAGE_URL);
-        acceptCookiesIfPopupPresent();
-        enterTextIntoField(SEARCH_FIELD_XPATH, SEARCH_TERM);
-        pressKey(Keys.ENTER);
-        clickOnElement(SEARCH_RESULTS_DEPARTMENTS_IN_LEFT_MENU_XPATH, TARGET_DEPARTMENT_INDEX);
-        clickOnElement(SEARCH_SPECIFIC_ITEM_XPATH);
-        String oneItemPrice = getPriceWithoutCurrency(SEARCH_PRICE_ON_ITEM_PAGE_XPATH);
-        clickOnElement(SEARCH_ADD_TO_CART_BUTTON_XPATH);
-        clickOnElement(waitForElementToBePresent(SEARCH_VIEW_CART_XPATH, 2));
-        waitForTitleToBePresent(EXPECTED_CART_TITLE, 2, 1);
-
-        String subTotalPrice = waitForElementToBePresent(SEARCH_SUBTOTAL_PRICE_XPATH, 2).getText().substring(1);
-        checkPrices(oneItemPrice, subTotalPrice);
-    }
-
-    @Test
     public void checkIncreasingProductQuantityInCart() {
         openWebPage(AMAZON_HOME_PAGE_URL);
-        acceptCookiesIfPopupPresent();
+        //acceptCookiesIfPopupPresent();
         enterTextIntoField(SEARCH_FIELD_XPATH, SEARCH_TERM);
         pressKey(Keys.ENTER);
         clickOnElement(SEARCH_RESULTS_DEPARTMENTS_IN_LEFT_MENU_XPATH, TARGET_DEPARTMENT_INDEX);
@@ -182,7 +130,7 @@ public class AmazonBasketTest extends BaseTest {
     @Test
     public void checkRemovingProductsFromCart() {
         openWebPage(AMAZON_HOME_PAGE_URL);
-        acceptCookiesIfPopupPresent();
+        //acceptCookiesIfPopupPresent();
         enterTextIntoField(SEARCH_FIELD_XPATH, SEARCH_TERM);
         pressKey(Keys.ENTER);
         clickOnElement(SEARCH_RESULTS_DEPARTMENTS_IN_LEFT_MENU_XPATH, TARGET_DEPARTMENT_INDEX);
@@ -198,17 +146,6 @@ public class AmazonBasketTest extends BaseTest {
         clickOnElement(waitForElementToBePresent(SEARCH_CART_IS_EMPTY, 2));
     }
 
-    @Step("Check customer is on required page")
-    private void checkCurrentUrl(String title) {
-        logger.info("Checking that customer is redirected to proper page after clicking link");
-        org.junit.Assert.assertEquals(title, driver.getTitle());
-    }
-
-    @Step("Check if prices are the same")
-    private void checkPrices(String firstPrice, String secondPrice) {
-        logger.info("Checking that two prices in different locations are the same");
-        org.junit.Assert.assertEquals(firstPrice, secondPrice);
-    }
 
     @Step("Check if prices are calculated correctly after changing quantity")
     private void checkPricesAfterChangingQuantity(String singleProductPrice, String multipleProductPrice, int quantity) {
@@ -226,6 +163,47 @@ public class AmazonBasketTest extends BaseTest {
     private String getTextFromXpath(String xpath) {
         logger.info(AmazonBasketTest.class.getName() + "Getting text from xpath: " + xpath);
         return findElement(xpath).getText();
+    }
+
+    @Test
+    public void checkChooseSpecificProductFromSearchList() {
+        homePage.open().acceptCookiesIfPopupPresent().searchByProductName(propertyManager.getProperty("product.name"));
+        searchResultsPage.selectCategoryByPosition(propertyManager.getProperty("product.category.index")).selectSpecificProduct();
+        checkCurrentPageTitle(propertyManager.getProperty("expected.subpage.title"));
+    }
+
+    @Test
+    public void checkAddingProductToCart() {
+        homePage.open().acceptCookiesIfPopupPresent().searchByProductName(propertyManager.getProperty("product.name"));
+        searchResultsPage.selectCategoryByPosition(propertyManager.getProperty("product.category.index")).selectSpecificProduct();
+        String singleItemPrice = productDetailsPage.getSingleItemPrice();
+        productDetailsPage.addProductToCart();
+        String summaryItemPrice = cartActionSummaryPage.getPriceWithoutCurrency();
+        checkPrices(singleItemPrice, summaryItemPrice);
+    }
+
+    @Test
+    public void checkPriceInCartSameAsOnProductPage() {
+        homePage.open().acceptCookiesIfPopupPresent().searchByProductName(propertyManager.getProperty("product.name"));
+        searchResultsPage.selectCategoryByPosition(propertyManager.getProperty("product.category.index")).selectSpecificProduct();
+        String singleItemPrice = productDetailsPage.getSingleItemPrice();
+        productDetailsPage.addProductToCart();
+        cartActionSummaryPage.waitForPageToLoad().viewCart();
+        cartPage.waitForPageToLoad();
+        String subTotalPrice = cartPage.getSubtotalPrice();
+        checkPrices(singleItemPrice, subTotalPrice);
+    }
+
+    @Step("Check if customer is on required page")
+    private void checkCurrentPageTitle(String title) {
+        logger.info("Checking that customer is redirected to proper page after clicking link");
+        org.junit.Assert.assertEquals(title, driver.getTitle());
+    }
+
+    @Step("Check if prices are the same")
+    private void checkPrices(String firstPrice, String secondPrice) {
+        logger.info("Checking that two prices in different locations are the same");
+        org.junit.Assert.assertEquals(firstPrice, secondPrice);
     }
 
 }

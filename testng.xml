@@ -2,10 +2,11 @@
 <!DOCTYPE suite SYSTEM "https://testng.org/testng-1.0.dtd">
 <suite name="TestingSuite">
   <listeners>
-    <listener class-name="listeners.TestResultsListener" />
-    <listener class-name="listeners.TestReporter" />
+    <listener class-name="com.pdrewa.listeners.TestResultsListener" />
+    <listener class-name="com.pdrewa.listeners.TestReporter" />
   </listeners>
   <test name="Basket">
+    <parameter name="testDataFileName" value="default.properties"/>
     <classes>
       <class name="AmazonBasketTest" />
     </classes>
