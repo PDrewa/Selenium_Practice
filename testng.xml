@@ -1,14 +1,32 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE suite SYSTEM "https://testng.org/testng-1.0.dtd">
-<suite name="TestingSuite">
+<suite name="TestingSuite" parallel="tests" thread-count="4">
     <listeners>
         <listener class-name="com.pdrewa.listeners.TestResultsListener"/>
         <listener class-name="com.pdrewa.listeners.TestReporter"/>
     </listeners>
-    <test name="Cart">
+    <test name="Allure Reports Example Edge">
+        <parameter name="browserName" value="Edge"/>
         <parameter name="testDataFileName" value="default.properties"/>
         <classes>
             <class name="AmazonCartTest"/>
         </classes>
-    </test> <!-- Test -->
+    </test>
+
+    <test name="Allure Reports Example Chrome">
+        <parameter name="browserName" value="Chrome"/>
+        <parameter name="testDataFileName" value="default.properties"/>
+        <classes>
+            <class name="AmazonCartTest"/>
+        </classes>
+    </test>
+
+    <test name="Allure Reports Example Firefox 1">
+        <parameter name="browserName" value="Firefox"/>
+        <parameter name="testDataFileName" value="otherStore.properties"/>
+        <classes>
+            <class name="AmazonCartTest"/>
+        </classes>
+    </test>
+
 </suite> <!-- Suite -->

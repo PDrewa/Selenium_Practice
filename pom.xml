@@ -12,6 +12,9 @@
 
         <version.testng>7.3.0</version.testng>
         <version.selenium>4.0.0-beta-2</version.selenium>
+        <version.selenium.server>4.0.0-alpha-2</version.selenium.server>
+        <selenium.grid.url>http://192.168.50.163:4444</selenium.grid.url>
+
         <version.guava>30.1-jre</version.guava>
         <version.slf4j.nop>2.0.0-alpha1</version.slf4j.nop>
         <version.log4j>2.14.1</version.log4j>
@@ -61,6 +64,13 @@
             <artifactId>selenium-java</artifactId>
             <version>${version.selenium}</version>
         </dependency>
+
+        <dependency>
+            <groupId>org.seleniumhq.selenium</groupId>
+            <artifactId>selenium-server</artifactId>
+            <version>${version.selenium.server}</version>
+        </dependency>
+
 
         <dependency>
             <groupId>com.googlecode.maven-download-plugin</groupId>
@@ -181,9 +191,12 @@
                         -javaagent:"${settings.localRepository}/org/aspectj/aspectjweaver/${version.aspectj}/aspectjweaver-${version.aspectj}.jar"
                     </argLine>
                     <systemPropertyVariables>
-                        <driver.path>${driver.folder}</driver.path>
+                        <webdriver.chrome.driver>${driver.folder}/chromedriver.exe</webdriver.chrome.driver>
+                        <webdriver.gecko.driver>${driver.folder}/geckodriver.exe</webdriver.gecko.driver>
+                        <webdriver.edge.driver>${driver.folder}/msedgedriver.exe</webdriver.edge.driver>
                         <test.data.folder>${test.data.folder}</test.data.folder>
                         <allure.results.directory>${basedir}/${allure.results.path}</allure.results.directory>
+                        <selenium.grid.url>${selenium.grid.url}</selenium.grid.url>
                     </systemPropertyVariables>
                 </configuration>
                 <dependencies>

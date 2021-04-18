@@ -66,7 +66,7 @@ public class AmazonCartTest extends BaseTest {
     @Step("Check if customer is on required page")
     private void checkCurrentPageTitle(String title) {
         logger.info("Checking that customer is redirected to proper page after clicking link");
-        org.junit.Assert.assertEquals(title, driver.getTitle());
+        org.junit.Assert.assertEquals(title, driver.get().getTitle());
     }
 
     @Step("Check if prices are the same")
