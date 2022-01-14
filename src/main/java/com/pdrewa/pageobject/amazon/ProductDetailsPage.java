@@ -18,6 +18,9 @@ public class ProductDetailsPage extends BasePage {
     @FindBy(xpath = "//input[@id='add-to-cart-button']")
     public WebElement addToCartButton;
 
+    @FindBy(xpath = "//*[@id='nav-cart']")
+    public WebElement cart;
+
     public ProductDetailsPage(WebDriver driver, PropertyManager propertyManager) {
         super(driver, propertyManager);
     }
@@ -29,9 +32,23 @@ public class ProductDetailsPage extends BasePage {
     }
 
     @Step("Add product to cart")
-    public void addProductToCart() {
+    public ProductDetailsPage addProductToCart() {
         logger.info("Trying to add product to cart");
         addToCartButton.click();
+        return this;
+    }
+    @Step("Waiting for page to load")
+    public ProductDetailsPage waitForPageToLoad() {
+        logger.info("Waiting for Cart Action Summary page to load");
+        super.waitForPageToLoad(addToCartButton);
+        return this;
+    }
+
+    @Step("Select cart")
+    public ProductDetailsPage selectCart() {
+        logger.info("Trying to select cart");
+        cart.click();
+        return this;
     }
 
 

@@ -1,0 +1,1 @@
+{"uuid":"60b6cc33-df23-495e-a805-91ddadd1e315","name":"AmazonBasketTest","children":["2dfcf3ba-c18a-4879-9153-b705b6eaab90"],"befores":[],"afters":[{"name":"cleanUp","status":"broken","stage":"finished","description":"","steps":[],"attachments":[],"parameters":[],"start":1618179810928,"stop":1618179810929}],"links":[],"start":1618179810655,"stop":1618179810935}

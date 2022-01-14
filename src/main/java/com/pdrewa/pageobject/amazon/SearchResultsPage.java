@@ -19,7 +19,7 @@ public class SearchResultsPage extends BasePage {
     @FindAll(@FindBy(xpath = "//div[@id='departments']//span[@class='a-size-base a-color-base']"))
     public List<WebElement> leftMenuCatogories;
 
-    @FindBy(xpath = "//*[contains(text(),'Certified Refurbished Kindle')]")
+    @FindBy(xpath = "//*[contains(text(),'Refurbished')]")
     public WebElement specificProduct;
 
 
@@ -39,7 +39,7 @@ public class SearchResultsPage extends BasePage {
         return selectCategoryByPosition(Integer.parseInt(position));
     }
 
-    @Step("Select category with {position} position in search results")
+    @Step("Select specifi product")
     public SearchResultsPage selectSpecificProduct() {
         logger.info("Trying to select specific product from search results");
         specificProduct.click();

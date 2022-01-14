@@ -36,10 +36,9 @@ public class AmazonCartTest extends BaseTest {
     @Test
     public void checkIncreaseQuantityOfProductInCart() {
         homePage.open().acceptCookiesIfPopupPresent().searchByProductName(propertyManager.getProperty("product.name"));
-        searchResultsPage.selectCategoryByPosition(propertyManager.getProperty("product.category.index")).selectSpecificProduct();
+        searchResultsPage.selectSpecificProduct();
         String singleItemPrice = productDetailsPage.getSingleItemPrice();
-        productDetailsPage.addProductToCart();
-        cartActionSummaryPage.waitForPageToLoad().viewCart();
+        productDetailsPage.waitForPageToLoad().addProductToCart().selectCart();
         cartPage.waitForPageToLoad().selectDropdown().waitForDropdownToLoad().changeQuantityTo2().waitForPriceToUpdate();
         String subTotalPrice = cartPage.getSubtotalPrice();
         checkPricesAfterChangingQuantity(singleItemPrice, subTotalPrice
