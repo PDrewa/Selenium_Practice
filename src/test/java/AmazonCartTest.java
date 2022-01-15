@@ -7,30 +7,19 @@ public class AmazonCartTest extends BaseTest {
     @Test
     public void checkChooseSpecificProductFromSearchList() {
         homePage.open().acceptCookiesIfPopupPresent().searchByProductName(propertyManager.getProperty("product.name"));
-        searchResultsPage.selectCategoryByPosition(propertyManager.getProperty("product.category.index")).selectSpecificProduct();
+        searchResultsPage.selectSpecificProduct();
         checkCurrentPageTitle(propertyManager.getProperty("expected.subpage.title"));
     }
 
     @Test
     public void checkAddingProductToCart() {
         homePage.open().acceptCookiesIfPopupPresent().searchByProductName(propertyManager.getProperty("product.name"));
-        searchResultsPage.selectCategoryByPosition(propertyManager.getProperty("product.category.index")).selectSpecificProduct();
+        searchResultsPage.selectSpecificProduct();
         String singleItemPrice = productDetailsPage.getSingleItemPrice();
-        productDetailsPage.addProductToCart();
-        String summaryItemPrice = cartActionSummaryPage.getPriceWithoutCurrency();
-        checkPricesWithoutChangingQuantity(singleItemPrice, summaryItemPrice);
-    }
-
-    @Test
-    public void checkPriceInCartSameAsOnProductPage() {
-        homePage.open().acceptCookiesIfPopupPresent().searchByProductName(propertyManager.getProperty("product.name"));
-        searchResultsPage.selectCategoryByPosition(propertyManager.getProperty("product.category.index")).selectSpecificProduct();
-        String singleItemPrice = productDetailsPage.getSingleItemPrice();
-        productDetailsPage.addProductToCart();
-        cartActionSummaryPage.waitForPageToLoad().viewCart();
+        productDetailsPage.waitForPageToLoad().addProductToCart().selectCart();
         cartPage.waitForPageToLoad();
-        String subTotalPrice = cartPage.getSubtotalPrice();
-        checkPricesWithoutChangingQuantity(singleItemPrice, subTotalPrice);
+        String summaryItemPrice = cartPage.getSubtotalPrice();
+        checkPricesWithoutChangingQuantity(singleItemPrice, summaryItemPrice);
     }
 
     @Test
@@ -48,9 +37,8 @@ public class AmazonCartTest extends BaseTest {
     @Test
     public void checkDeleteProductFromCart() {
         homePage.open().acceptCookiesIfPopupPresent().searchByProductName(propertyManager.getProperty("product.name"));
-        searchResultsPage.selectCategoryByPosition(propertyManager.getProperty("product.category.index")).selectSpecificProduct();
-        productDetailsPage.addProductToCart();
-        cartActionSummaryPage.waitForPageToLoad().viewCart();
+        searchResultsPage.selectSpecificProduct();
+        productDetailsPage.waitForPageToLoad().addProductToCart().selectCart();
         cartPage.waitForPageToLoad()
                 .selectDropdown()
                 .waitForDropdownToLoad()

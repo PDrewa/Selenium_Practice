@@ -17,7 +17,6 @@ public abstract class BaseTest {
     protected DriverManager driverManager;
     protected PropertyManager propertyManager;
     protected ProductDetailsPage productDetailsPage;
-    protected CartActionSummaryPage cartActionSummaryPage;
     protected CartPage cartPage;
 
 
@@ -36,7 +35,6 @@ public abstract class BaseTest {
         homePage = new HomePage(driver, propertyManager);
         searchResultsPage = new SearchResultsPage(driver, propertyManager);
         productDetailsPage = new ProductDetailsPage(driver, propertyManager);
-        cartActionSummaryPage = new CartActionSummaryPage(driver, propertyManager);
         cartPage = new CartPage(driver, propertyManager);
 
 
